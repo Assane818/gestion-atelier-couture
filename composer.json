@@ -1,0 +1,21 @@
+{
+    "name": "assan/ges_atelier_couture",
+    "description": "examen php 2eme semestre gestion atelier couture",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Asn\\": "src/",
+            "Asn\\Controllers\\": "src/controllers",
+            "Asn\\Model\\": "src/model",
+            "Asn\\Core\\": "src/core",
+            "Asn\\Api\\": "src/api"
+        }
+    },
+    "authors": [
+        {
+            "name": "Assane818",
+            "email": "assanen818@gmail.com"
+        }
+    ],
+    "require": {}
+}

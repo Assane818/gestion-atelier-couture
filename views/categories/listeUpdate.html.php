@@ -1,0 +1,66 @@
+<?php
+    use Asn\Core\Session;
+    $erros = [];
+    if (Session::get("errors")) {
+        $erros = Session::get("errors");
+    }
+?>
+
+<div class="flex items-center justify-center h-[calc(100vh-5rem)]">
+    <div class="container mx-auto flex flex-col items-center justify-center gap-10">
+        <div class="bg-white p-10 rounded-lg shadow-lg max-w-2xl w-full overflow-hidden mb-5 mt-5">
+            <h1 class="text-2xl font-bold mb-6 text-[#eea6af]">Gestion des Categories</h1>
+            <form class="mb-6" action="<?= WEBROOT ?>" method="post">
+                <div class="flex items-center">
+                    <input name="nomCategorie" id="inputTypeCategorie" class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#a6c1ee] focus:border-[#a6c1ee] sm:text-sm <?= add_class_invalid("nomCategorie")?>" placeholder="Nom du nouveau categorie" value="<?=$categorie['nomCategorie']?>">
+                    <div id="errorTypeCategorie" class="text-red-500 text-sm mt-1"><?=$erros["nomCategorie"]??""?></div>
+                    <input type="hidden" name="action" value="update-categorie">
+                    <input type="hidden" name="categorieId" id="categorieId" value="<?=$categorie['categorieId']?>">
+                    <input type="hidden" name="controller" value="categorie">
+                    <button type="submit" class="ml-4 bg-[#eea6af] text-white px-5 py-2 rounded-full hover:bg-[#c2c9fb] transition duration-300" name="btnSave" id="addTypeCategorie">Modifier</button>
+                    <input type="hidden" name="controller" value="categorie">
+                </div>
+            </form>
+            <div class="overflow-x-auto max-h-[300px] overflow-y-auto">
+                <table class="min-w-full bg-white">
+                    <thead class="bg-[#eea6af] text-white">
+                        <tr>
+                            <th class="px-4 py-2">Nom du categorie</th>
+                            <th class="px-4 py-2">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($categories as $categorie) : ?>
+                            <tr class="border-b hover:bg-gray-100">
+                                <td class="py-3 px-6 text-center"><?= $categorie['nomCategorie'] ?></td>
+                                <td class="px-4 py-2 text-center flex justify-center gap-4">
+                                    <form action="<?= WEBROOT ?>" method="post">
+                                        <div class="p-2 bg-blue-100 rounded-full">
+                                            <input type="hidden" name="action" value="listeUpdate-categorie">
+                                            <input type="hidden" name="categorieId" value="<?= $categorie['categorieId'] ?>">
+                                            <input type="hidden" name="controller" value="categorie">
+                                            <button type="submit" name="btnUpdate">
+                                                <i class="fa-regular fa-pen-to-square text-blue-500 cursor-pointer hover:text-blue-600 transition duration-300"></i>
+                                            </button>
+                                        </div>
+                                    </form>
+                                    <form action="<?= WEBROOT ?>" method="post">
+                                        <input type="hidden" name="action" value="delete-categorie">
+                                        <input type="hidden" name="categorieId" value="<?= $categorie['categorieId'] ?>">
+                                        <input type="hidden" name="controller" value="categorie">
+                                        <div class="p-2 bg-red-100 rounded-full">
+                                            <button type="submit" name="btnDelete">
+                                                <i class="fa-solid fa-trash text-red-500 cursor-pointer hover:text-red-600 transition duration-300"></i>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<?php Session::remove("errors");?>
