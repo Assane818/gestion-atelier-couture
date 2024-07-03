@@ -60,22 +60,12 @@
                 <td class="py-2 px-4 border-b text-center"><?= $vente['tel'] ?></td>
                 <td class="py-2 px-4 border-b flex items-center justify-center gap-2">
                   <form action="<?= WEBROOT ?>" method="post">
-                    <input type="hidden" name="action" value="formupdate-article">
-                    <input type="hidden" name="articleId" value="<?= $vente['venteId'] ?>">
-                    <input type="hidden" name="controller" value="article">
-                    <div class="p-2 bg-blue-100 rounded-full">
-                      <button type="submit" name="btnUpdate">
-                        <i class="fa-regular fa-pen-to-square text-blue-500 cursor-pointer hover:text-blue-600 transition duration-300"></i>
-                      </button>
-                    </div>
-                  </form>
-                  <form action="<?= WEBROOT ?>" method="post">
-                    <input type="hidden" name="action" value="delete-article">
-                    <input type="hidden" name="articleId" value="<?= $vente['venteId'] ?>">
-                    <input type="hidden" name="controller" value="article">
-                    <div class="p-2 bg-red-100 rounded-full">
-                      <button type="submit" name="btnDelete">
-                        <i class="fa-solid fa-trash text-red-500 cursor-pointer hover:text-red-600 transition duration-300"></i>
+                    <input type="hidden" name="action" value="detail-vente">
+                    <input type="hidden" name="venteId" value="<?= $vente['venteId'] ?>">
+                    <input type="hidden" name="controller" value="vente">
+                    <div class="p-2 bg-green-100 rounded-full">
+                      <button type="submit" name="btnViewDetails">
+                        <i class="fas fa-eye text-green-500 cursor-pointer hover:text-green-600 transition duration-300"></i>
                       </button>
                     </div>
                   </form>

@@ -6,6 +6,7 @@
     use Asn\Controllers\CategorieController;
     use Asn\Controllers\SecuriteController;
     use Asn\Controllers\ApprovisionnementController;
+    use Asn\Controllers\ErrorController;
     use Asn\Controllers\ProductionController;
     use Asn\Controllers\VenteController;
 
@@ -13,24 +14,26 @@
         public static function run() {
             if (isset($_REQUEST['controller'])) {
                 if ($_REQUEST['controller'] == "article") {
-                    new ArticleController();
+                    $Controller = new ArticleController();
                 } elseif ($_REQUEST['controller'] == "type") {
-                    new TypeController();
+                    $Controller = new TypeController();
                 } elseif ($_REQUEST['controller'] == "categorie") {
-                    new CategorieController();
+                    $Controller = new CategorieController();
                 } elseif ($_REQUEST['controller'] == "security") {
-                    new SecuriteController();
+                    $Controller = new SecuriteController();
                 } elseif ($_REQUEST['controller'] == "api-categorie") {
-                    new ApiCategorieController();
+                    $Controller = new ApiCategorieController();
                 } elseif ($_REQUEST['controller'] == "appro") {
-                    new ApprovisionnementController();
+                    $Controller = new ApprovisionnementController();
                 } elseif ($_REQUEST['controller'] == "prod") {
-                    new ProductionController();
+                    $Controller = new ProductionController();
                 } elseif ($_REQUEST['controller'] == "vente") {
-                    new VenteController();
+                    $Controller = new VenteController();
+                } else {
+                    $Controller = new ErrorController;
                 }
             } else {
-                new SecuriteController();
+                $Controller = new SecuriteController();
             }
         }
     }

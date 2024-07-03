@@ -12,20 +12,23 @@
     class VenteController extends Controller {
         private  ArticleModel $articleModel;
         private ClientModel $clientModel;
-        private VenteModel $VenteModel;
+        private VenteModel $venteModel;
         public function __construct() {
             parent::__construct();
             if (!Autorisation::isConnect()) {
                 parent::redirectToRoute("action=show-form&controller=security");
             }
+            if (!Autorisation::hasRole("Admin") && !Autorisation::hasRole("Vendeur")) {
+                parent::redirectToRoute("action=logout&controller=security");
+            }
             $this->articleModel = new ArticleModel;
             $this->clientModel = new ClientModel;
-            $this->VenteModel = new VenteModel;
+            $this->venteModel = new VenteModel;
             $this->load();
         }
         private function listerVente(int $page = 0): void {
             $this->renderView("ventes/liste", [
-                "reponse" => $this->VenteModel->findAllWithFiltre($page,OFFSET),
+                "reponse" => $this->venteModel->findAllWithFiltre($page,OFFSET),
                 "articles" => $this->articleModel->findAllArticleVente(),
                 "clients" => $this->clientModel->findAll(),
                 "currentPage" => $page
@@ -37,7 +40,7 @@
         }
         private function listerventeFiltre($date,$articleId,$clientId,$page = 0): void {
             $this->renderView("ventes/liste", [
-                "reponse" => $this->VenteModel->findAllWithFiltre($page,OFFSET,$date,$articleId,$clientId),
+                "reponse" => $this->venteModel->findAllWithFiltre($page,OFFSET,$date,$articleId,$clientId),
                 "articles" => $this->articleModel->findAllArticleVente(),
                 "clients" => $this->clientModel->findAll(),
                 "currentPage" => $page
@@ -49,9 +52,17 @@
                 "clients" => $this->clientModel->findAll()
             ]);
         }
+        private function detailVente(int $id): void {
+            $this->renderView("ventes/detail", [
+                "reponse" => $this->venteModel->get($id),
+            ]);          
+        }
         
         public function load() {
             if (isset($_REQUEST['action'])) {
+                if (!isset($_REQUEST['page']) || is_string($_REQUEST['page'])) {
+                    $this->listerVente();
+                }
                 if ($_REQUEST['action'] == "liste-vente") {
                     $this->listerVente($_REQUEST['page']);
                 } elseif ($_REQUEST['action'] == "form-vente") {
@@ -62,6 +73,10 @@
                     $this->ajouterVente();
                 } elseif ($_REQUEST['action'] == "listeFiltre-vente") {
                     $this->listerVenteFiltre($_REQUEST['dateFiltre'],$_REQUEST['articleId'],$_REQUEST['clientId'],$_REQUEST['page']);
+                } elseif ($_REQUEST['action'] == "detail-vente") {
+                    $this->detailVente($_REQUEST['venteId']);
+                } else {
+                    new ErrorController();
                 }
             } else {
                 $this->listerVente();
@@ -73,16 +88,35 @@
             } else {
                 $panier = Session::get("panier");
             }
-            $panier->addArticleVente($this->articleModel->get($data['articleId']),$data['qteVente'],$data['clientId'],$data['observation']);
-            Session::add("panier",$panier);
+            Validator::isEmpty($data['qteVente'],"qteVente");
+            Validator::isPositif($data['qteVente'],"qteVente");
+            if (Validator::isValide()) {
+                $panier->addArticleVente($this->articleModel->get($data['articleId']),$data['qteVente'],$data['clientId'],$data['observation']);
+                Validator::isEmpty($panier->observation,"observation");
+                if (Validator::isValide()) {
+                    Session::add("panier",$panier);
+                } else {
+                    Validator::add("observation","Il manque l'observation");
+                    Session::add("errors",Validator::$errors);
+                }
+            } else {
+                Session::add("errors",Validator::$errors);
+            }
             parent::redirectToRoute("action=form-vente&controller=vente");
+            
         }
         public function ajouterVente():void {
             $panier = Session::get("panier");
-            $this->VenteModel->save($panier);
-            $panier->clear();
-            Session::remove("panier");
-            parent::redirectToRoute("action=liste-vente&controller=vente&page=0");
+            Validator::isEmpty($panier,"panier","Le panier est vide");
+            if (Validator::isValide()) {
+                $this->venteModel->save($panier);
+                $panier->clear();
+                Session::remove("panier");
+                parent::redirectToRoute("action=liste-vente&controller=vente&page=0");
+            } else {
+                Session::add("errors",Validator::$errors);
+                parent::redirectToRoute("action=form-vente&controller=vente");
+            }
         }
     }
 ?>

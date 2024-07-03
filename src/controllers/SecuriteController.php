@@ -23,6 +23,8 @@
                     $this->connexion($_REQUEST);
                 } elseif ($_REQUEST['action'] == "logout") {
                     $this->logout();
+                } else {
+                    new ErrorController();
                 }
             } else {
                 $this->showForm();
@@ -45,6 +47,13 @@
                 $userConnect = $this->userModel->findByLoginAndPassword($user["login"],$user["password"]);
                 if ($userConnect) {
                     Session::add("userConnect",$userConnect);
+                    if (Session::get("userConnect")["name"] == "RS") {
+                        parent::redirectToRoute("action=liste-appro&controller=appro&page=0");
+                    } elseif (Session::get("userConnect")["name"] == "RP") {
+                        parent::redirectToRoute("action=liste-prod&controller=prod&page=0");
+                    } elseif (Session::get("userConnect")["name"] == "Vendeur") {
+                        parent::redirectToRoute("action=liste-vente&controller=vente&page=0");
+                    }
                     parent::redirectToRoute("action=liste-article&controller=article&page=0");
                 } else {
                     Validator::add("error_connexion","Utilisateur Introuvable");

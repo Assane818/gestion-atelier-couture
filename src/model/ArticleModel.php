@@ -37,8 +37,14 @@
                 'pages' => ceil($result['nbreArticle']/$offset)
             ];
         }
-        public function findAllArticleVente(): array {
-            return $this->executeSelect("SELECT * FROM `$this->table` a , `categorie` c , `type` t  WHERE a.`typeId`=t.typeId and a.`categorieId`=c.categorieId and a.`typeId` = 79 and a.`qteStock` > 0");
+        public function findAllArticleVente($positif = true): array {
+            if ($positif) {
+                return $this->executeSelect("SELECT * FROM `$this->table` a , `categorie` c , `type` t  WHERE a.`typeId`=t.typeId and a.`categorieId`=c.categorieId and a.`typeId` = 79 and a.`qteStock` > 0");
+            }
+            return $this->executeSelect("SELECT * FROM `$this->table` a , `categorie` c , `type` t  WHERE a.`typeId`=t.typeId and a.`categorieId`=c.categorieId and a.`typeId` = 79");
+        }
+        public function findAllArticleConfection(): array {
+            return $this->executeSelect("SELECT * FROM `$this->table` a , `categorie` c , `type` t  WHERE a.`typeId`=t.typeId and a.`categorieId`=c.categorieId and a.`typeId` = 1 and a.`qteStock` > 0");
         }
         public function get(int $id) {
             return $this->executeSelect("SELECT * FROM `$this->table` a WHERE a.`$this->primaryKey` = $id",true);

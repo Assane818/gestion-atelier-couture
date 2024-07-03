@@ -24,19 +24,19 @@
                     <li class="<?= has_role("Admin")?>">
                         <a class="hover:text-[#c2c9fb]" href="<?=WEBROOT?>?action=liste-article&controller=article&page=0">Article</a>
                     </li>
-                    <li>
+                    <li class="<?= has_role("Admin")?>">
                         <a class="hover:text-[#c2c9fb]" href="<?=WEBROOT?>?action=liste-type&controller=type&page=0">Type</a>
                     </li>
-                    <li>
+                    <li class="<?= has_role("Admin")?>">
                         <a class="hover:text-[#c2c9fb]" href="<?=WEBROOT?>?action=liste-categorie&controller=categorie&page=0">Categorie</a>
                     </li>
-                    <li>
+                    <li class="<?php use Asn\Core\Autorisation; if (Autorisation::hasRole("Admin") || Autorisation::hasRole("RS")) echo ""; else echo "hidden"?>">
                         <a class="hover:text-[#c2c9fb]" href="<?=WEBROOT?>?action=liste-appro&controller=appro&page=0">Approvisonnement</a>
                     </li>
-                    <li>
+                    <li class="<?php if (Autorisation::hasRole("Admin") || Autorisation::hasRole("RP")) echo ""; else echo "hidden"?>">
                         <a class="hover:text-[#c2c9fb]" href="<?=WEBROOT?>?action=liste-prod&controller=prod&page=0">Production</a>
                     </li>
-                    <li>
+                    <li class="<?php if (Autorisation::hasRole("Admin") || Autorisation::hasRole("Vendeur")) echo ""; else echo "hidden"?>">
                         <a class="hover:text-[#c2c9fb]" href="<?=WEBROOT?>?action=liste-vente&controller=vente&page=0">Vente</a>
                     </li>
                 </ul>

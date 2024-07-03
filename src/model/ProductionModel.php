@@ -47,6 +47,12 @@ use DateTime;
                 'pages' => ceil($result['nbreTotal']/$offset)
             ];
         }
+        public function get(int $id) {
+            return [
+                "prod" => $this->executeSelect("SELECT * FROM `$this->table`a, `user` u , `role` r, `detailprod` d WHERE a.`productionId` = $id AND a.`userId`=u.userId AND u.roleId = r.id AND d.`productionId` = a.`productionId`",true),
+                "detail" => $this->executeSelect("SELECT * FROM `detailprod` d, `article` a WHERE d.`articleId` = a.`articleId` AND d.`productionId` = $id")
+            ];
+        }
     }
     
     

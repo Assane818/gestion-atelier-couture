@@ -1,3 +1,10 @@
+<?php
+    use Asn\Core\Session;
+    $erros = [];
+    if (Session::get("errors")) {
+        $erros = Session::get("errors");
+    }
+?>
 
 <div class="bg-gradient-to-t from-[#c2c9fb] to-[#eea6af] min-h-screen flex items-center justify-center">
     <div class="container mx-auto flex flex-col items-center justify-center h-full gap-10">
@@ -29,13 +36,13 @@
                     </div>
                     <div class="w-1/4">
                         <label for="qteProd" class="block text-sm font-medium text-gray-700">Quantité</label>
-                        <input type="text" name="qteVente" id="qteVente" class="mt-1 block w-full border border-[#c2c9fb] rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#eea6af] focus:border-[#eea6af] sm:text-sm <?= add_class_invalid("qteProd") ?>" placeholder="Quantité">
-                        <div id="errorQuantite" class="text-red-500 text-sm mt-1"><?= $erros["qteProd"] ?? "" ?></div>
+                        <input type="text" name="qteVente" id="qteVente" class="mt-1 block w-full border border-[#c2c9fb] rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#eea6af] focus:border-[#eea6af] sm:text-sm <?= add_class_invalid("qteVente") ?>" placeholder="Quantité">
+                        <div id="errorQuantite" class="text-red-500 text-sm mt-1"><?= $erros["qteVente"] ?? "" ?></div>
                     </div>
                 </div>
                 <div class="mt-4">
                     <label for="observation" class="block text-sm font-medium text-gray-700">Observation</label>
-                    <textarea id="observation" name="observation" rows="4" class="mt-1 block w-full border border-[#c2c9fb] rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-[#eea6af] focus:border-transparent sm:text-sm bg-white resize-none <?= add_class_invalid("observation") ?>" placeholder="Observation"><?php use Asn\core\Session; if (Session::get("panier") != false) echo Session::get("panier")->observation?></textarea>
+                    <textarea id="observation" name="observation" rows="4" class="mt-1 block w-full border border-[#c2c9fb] rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-[#eea6af] focus:border-transparent sm:text-sm bg-white resize-none <?= add_class_invalid("observation") ?>" placeholder="Observation"><?php if (Session::get("panier") != false) echo Session::get("panier")->observation?></textarea>
                     <div id="errorObservation" class="text-red-500 text-sm mt-1"><?= $erros["observation"] ?? "" ?></div>
                 </div>
 
@@ -73,13 +80,15 @@
                     </div>
                 <?php endif; ?>
                 <div class="flex gap-4 w-full mt-4">
-                    <button type="button" class="text-[#eea6af] w-full px-5 py-2 mb-1 rounded-full hover:text-[#c2c9fb] border border-[#eea6af] hover:border-[#c2c9fb] transition duration-300"><a href="<?= WEBROOT ?>?action=liste-prod&controller=prod&page=0">Annuler</a></button>
+                    <button type="button" class="text-[#eea6af] w-full px-5 py-2 mb-1 rounded-full hover:text-[#c2c9fb] border border-[#eea6af] hover:border-[#c2c9fb] transition duration-300"><a href="<?= WEBROOT ?>?action=liste-vente&controller=vente&page=0">Annuler</a></button>
                     <button type="button" class="bg-[#eea6af] text-white w-full px-5 py-2 mb-1 rounded-full hover:bg-[#c2c9fb] transition duration-300" name="" id="addArticle"><a href="<?= WEBROOT ?>?action=add-vente&controller=vente">Enregistrer</a></button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+<?php Session::remove("errors");?>
+
 
 
 

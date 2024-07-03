@@ -17,6 +17,9 @@
             if (!Autorisation::isConnect()) {
                 parent::redirectToRoute("action=show-form&controller=security");
             }
+            if (!Autorisation::hasRole("Admin") && !Autorisation::hasRole("RS")) {
+                parent::redirectToRoute("action=logout&controller=security");
+            }
             $this->articleModel = new ArticleModel;
             $this->fournisseurModel = new FournisseurModel;
             $this->approModel = new ApproModel;
@@ -25,7 +28,7 @@
         private function listerAppro(int $page = 0): void {
             $this->renderView("appros/liste", [
                 "reponse" => $this->approModel->findAllWithPaginate($page,OFFSET),
-                "articles" => $this->articleModel->findAll(),
+                "articles" => $this->articleModel->findAllArticleConfection(),
                 "fournisseurs" => $this->fournisseurModel->findAll(),
                 "currentPage" => $page
             ]);
@@ -37,7 +40,7 @@
         private function listerApproFiltre($date,$articleId,$fournisseurId,$page = 0): void {
             $this->renderView("appros/liste", [
                 "reponse" => $this->approModel->findAllWithFiltre($page,OFFSET,$date,$articleId,$fournisseurId),
-                "articles" => $this->articleModel->findAll(),
+                "articles" => $this->articleModel->findAllArticleConfection(),
                 "fournisseurs" => $this->fournisseurModel->findAll(),
                 "currentPage" => $page
             ]);
@@ -45,12 +48,20 @@
         private function chargerFormulaire(): void {
             $this->renderView("appros/form", [
                 "fournisseurs" => $this->fournisseurModel->findAll(),
-                "articles" => $this->articleModel->findAll()
+                "articles" => $this->articleModel->findAllArticleConfection()
+            ]);          
+        }
+        private function detailAppro(int $id): void {
+            $this->renderView("appros/detail", [
+                "reponse" => $this->approModel->get($id),
             ]);          
         }
         
         public function load() {
             if (isset($_REQUEST['action'])) {
+                if (!isset($_REQUEST['page']) || is_string($_REQUEST['page'])) {
+                    $this->listerAppro();
+                }
                 if ($_REQUEST['action'] == "liste-appro") {
                     $this->listerAppro($_REQUEST['page']);
                 } elseif ($_REQUEST['action'] == "form-appro") {
@@ -61,6 +72,10 @@
                     $this->ajouterAppro();
                 } elseif ($_REQUEST['action'] == "listeFiltre-appro") {
                     $this->listerApproFiltre($_REQUEST['dateFiltre'],$_REQUEST['articleId'],$_REQUEST['fourId'],$_REQUEST['page']);
+                } elseif ($_REQUEST['action'] == "detail-appro") {
+                    $this->detailAppro($_REQUEST['approId']);
+                } else {
+                    new ErrorController();
                 }
             } else {
                 $this->listerAppro();

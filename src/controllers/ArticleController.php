@@ -15,6 +15,8 @@
             parent::__construct();
             if (!Autorisation::isConnect()) {
                 parent::redirectToRoute("action=show-form&controller=security");
+            } if (!Autorisation::hasRole("Admin")) {
+                parent::redirectToRoute("action=logout&controller=security");
             }
             $this->articleModel = new ArticleModel;
             $this->typeModel = new TypeModel;
@@ -100,6 +102,9 @@
         }
         public function load() {
             if (isset($_REQUEST['action'])) {
+                if (!isset($_REQUEST['page']) || is_string($_REQUEST['page'])) {
+                    $this->listerArticle();
+                }
                 if ($_REQUEST['action'] == "liste-article") {
                     $this->listerArticle($_REQUEST['page']);
                 } elseif ($_REQUEST['action'] == "form-article") {
@@ -119,6 +124,8 @@
                     unset($_REQUEST['action']);
                     unset($_REQUEST['btnUpdate']);
                     $this->modifier($_REQUEST);
+                } else {
+                    new ErrorController();
                 }
             } else {
                 $this->listerArticle();

@@ -71,5 +71,11 @@
                 'pages' => ceil($result['nbreTotal']/$offset)
             ];
         }
+        public function get(int $id) {
+            return [
+                "appro" => $this->executeSelect("SELECT * FROM `$this->table`a, `fournisseur` f, `user` u , `role` r, `detail` d WHERE a.`approId` = $id AND a.`fournisseurId`=f.fourId AND a.`userId`=u.userId AND u.roleId = r.id AND d.`approId` = a.`approId`",true),
+                "detail" => $this->executeSelect("SELECT * FROM `detail` d, `article` a WHERE d.`articleId` = a.`articleId` AND d.`approId` = $id")
+            ];
+        }
     }
     

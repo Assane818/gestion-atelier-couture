@@ -5,7 +5,6 @@
     use Asn\Core\Session;
     use Asn\Core\Validator;
     use Asn\Core\Autorisation;
-    use Asn\Model\ApproModel;
     use Asn\Model\PanierModel;
     use Asn\Model\ProductionModel;
 
@@ -17,6 +16,9 @@
             if (!Autorisation::isConnect()) {
                 parent::redirectToRoute("action=show-form&controller=security");
             }
+            if (!Autorisation::hasRole("Admin") && !Autorisation::hasRole("RP")) {
+                parent::redirectToRoute("action=logout&controller=security");
+            }
             $this->articleModel = new ArticleModel;
             $this->productionModel = new ProductionModel;
             $this->load();
@@ -24,7 +26,7 @@
         private function listerProd(int $page = 0): void {
             $this->renderView("prods/liste", [
                 "reponse" => $this->productionModel->findAllWithPaginate($page,OFFSET),
-                "articles" => $this->articleModel->findAll(),
+                "articles" => $this->articleModel->findAllArticleVente(),
                 "currentPage" => $page
             ]);
             if (Session::get("panier") != false) {
@@ -35,18 +37,26 @@
         private function listerProdFiltre($date,$article,$page = 0): void {
             $this->renderView("prods/liste", [
                 "reponse" => $this->productionModel->findAllWithPaginate($page,OFFSET,$date,$article),
-                "articles" => $this->articleModel->findAll(),
+                "articles" => $this->articleModel->findAllArticleVente(),
                 "currentPage" => $page
             ]);
         }
         private function chargerFormulaire(): void {
             $this->renderView("prods/form", [
-                "articles" => $this->articleModel->findAll()
+                "articles" => $this->articleModel->findAllArticleVente(false)
+            ]);          
+        }
+        private function detailProd(int $id): void {
+            $this->renderView("prods/detail", [
+                "reponse" => $this->productionModel->get($id),
             ]);          
         }
         
         public function load() {
             if (isset($_REQUEST['action'])) {
+                if (!isset($_REQUEST['page']) || is_string($_REQUEST['page'])) {
+                    $this->listerProd();
+                }
                 if ($_REQUEST['action'] == "liste-prod") {
                     $this->listerProd($_REQUEST['page']);
                 } elseif ($_REQUEST['action'] == "form-prod") {
@@ -57,6 +67,10 @@
                     $this->ajouterProd();
                 } elseif ($_REQUEST['action'] == "listeFiltre-prod") {
                     $this->listerProdFiltre($_REQUEST['dateFiltre'],$_REQUEST['articleId'],$_REQUEST['page']);
+                } elseif ($_REQUEST['action'] == "detail-prod") {
+                    $this->detailProd($_REQUEST['productionId']);
+                } else {
+                    new ErrorController();
                 }
             } else {
                 $this->listerProd();
