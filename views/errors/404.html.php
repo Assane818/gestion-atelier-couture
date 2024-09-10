@@ -26,7 +26,7 @@
   </defs>
 </svg>
 
-<h2>Page Not Found</h2>
+<h2>La page n'existe pas</h2>
 
 <style>
 @import url('https://fonts.googleapis.com/css?family=Audiowide&display=swap');

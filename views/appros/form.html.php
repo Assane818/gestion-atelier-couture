@@ -42,12 +42,14 @@
                         <button type="submit" class="bg-[#eea6af] text-white px-5 py-2 mb-1 rounded-full hover:bg-[#c2c9fb] transition duration-300" name="btnSave" id="addArticle">Ajouter</button>
                     </div>
                 </div>
-
                 <?php if (Session::get("panier") != false) :?>
                     <div class="overflow-x-auto mt-6">
                         <div class="flex space-x-6">
                             <?php foreach (Session::get("panier")->articles as $article) : ?>
                                 <div class="min-w-[250px] bg-white p-4 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
+                                    <div class="flex justify-center mb-4">
+                                        <img src="<?= WEBROOT ?>/img/<?= $article['image'] ?>" alt="<?= $article['libelle'] ?>" class="w-32 h-32 object-cover rounded-full">
+                                    </div>
                                     <h3 class="text-lg font-bold mb-2 text-center text-gray-800"><?= $article['libelle'] ?></h3>
                                     <div class="flex justify-between mb-2">
                                         <span class="font-semibold">Quantité:</span>

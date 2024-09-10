@@ -62,19 +62,21 @@
           </tbody>
         </table>
       </div>
-      <div class="flex justify-center mt-6">
-        <nav class="inline-flex space-x-2">
-          <a href="<?=WEBROOT?>?action=listeFiltre-prod&controller=prod&dateFiltre=<?php if (isset($_GET['dateFiltre'])) echo $_GET['dateFiltre']?>&articleId=<?php if (isset($_GET['articleId'])) echo $_GET['articleId']?>&page=<?php if ($currentPage == 0) echo 0; else echo $currentPage-1?>" class="inline-flex items-center justify-center w-8 h-8 text-gray-700 bg-white border border-gray-300 rounded-full hover:bg-gray-200 transition duration-300">
-            <i class="fas fa-chevron-left"></i>
-          </a>
-          <?php for ($i=0; $i < $reponse['pages'] ; $i++) :?>
-            <a href="<?=WEBROOT?>?action=listeFiltre-prod&controller=prod&dateFiltre=<?php if (isset($_GET['dateFiltre'])) echo $_GET['dateFiltre']?>&articleId=<?php if (isset($_GET['articleId'])) echo $_GET['articleId']?>&page=<?=$i?>" class="inline-flex items-center justify-center w-8 h-8 rounded-full hover:bg-gray-200 transition duration-300<?php if ($i == $currentPage) echo"text-white bg-[#eea6af] border border-[#eea6af]";else echo "text-gray-700 bg-white border border-gray-" ?>"><?= $i+1?></a>
-          <?php endfor ?>
-          <a href="<?=WEBROOT?>?action=listeFiltre-prod&controller=prod&dateFiltre=<?php if (isset($_GET['dateFiltre'])) echo $_GET['dateFiltre']?>&articleId=<?php if (isset($_GET['articleId'])) echo $_GET['articleId']?>&page=<?php if ($currentPage == $reponse['pages']-1) echo $reponse['pages']-1; else echo $currentPage+1?>" class="inline-flex items-center justify-center w-8 h-8 text-gray-700 bg-white border border-gray-300 rounded-full hover:bg-gray-200 transition duration-300">
-            <i class="fas fa-chevron-right"></i>
-          </a>
-        </nav>
-      </div>
+      <?php if ($reponse['pages'] > 1): ?>
+        <div class="flex justify-center mt-6">
+          <nav class="inline-flex space-x-2">
+            <a href="<?=WEBROOT?>?action=listeFiltre-prod&controller=prod&dateFiltre=<?php if (isset($_GET['dateFiltre'])) echo $_GET['dateFiltre']?>&articleId=<?php if (isset($_GET['articleId'])) echo $_GET['articleId']?>&page=<?php if ($currentPage == 0) echo 0; else echo $currentPage-1?>" class="inline-flex items-center justify-center w-8 h-8 text-gray-700 bg-white border border-gray-300 rounded-full hover:bg-gray-200 transition duration-300">
+              <i class="fas fa-chevron-left"></i>
+            </a>
+            <?php for ($i=0; $i < $reponse['pages'] ; $i++) :?>
+              <a href="<?=WEBROOT?>?action=listeFiltre-prod&controller=prod&dateFiltre=<?php if (isset($_GET['dateFiltre'])) echo $_GET['dateFiltre']?>&articleId=<?php if (isset($_GET['articleId'])) echo $_GET['articleId']?>&page=<?=$i?>" class="inline-flex items-center justify-center w-8 h-8 rounded-full hover:bg-gray-200 transition duration-300<?php if ($i == $currentPage) echo"text-white bg-[#eea6af] border border-[#eea6af]";else echo "text-gray-700 bg-white border border-gray-" ?>"><?= $i+1?></a>
+            <?php endfor ?>
+            <a href="<?=WEBROOT?>?action=listeFiltre-prod&controller=prod&dateFiltre=<?php if (isset($_GET['dateFiltre'])) echo $_GET['dateFiltre']?>&articleId=<?php if (isset($_GET['articleId'])) echo $_GET['articleId']?>&page=<?php if ($currentPage == $reponse['pages']-1) echo $reponse['pages']-1; else echo $currentPage+1?>" class="inline-flex items-center justify-center w-8 h-8 text-gray-700 bg-white border border-gray-300 rounded-full hover:bg-gray-200 transition duration-300">
+              <i class="fas fa-chevron-right"></i>
+            </a>
+          </nav>
+        </div>
+      <?php endif ?>
     </div>
   </div>
 </div>

@@ -102,9 +102,6 @@
         }
         public function load() {
             if (isset($_REQUEST['action'])) {
-                if (!isset($_REQUEST['page']) || is_string($_REQUEST['page'])) {
-                    $this->listerArticle();
-                }
                 if ($_REQUEST['action'] == "liste-article") {
                     $this->listerArticle($_REQUEST['page']);
                 } elseif ($_REQUEST['action'] == "form-article") {
@@ -112,6 +109,17 @@
                 } elseif ($_REQUEST['action'] == "save-article") {
                     unset($_REQUEST['action']);
                     unset($_REQUEST['btnSave']);
+                    if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+                        $fileName = $_FILES['image']['name'];
+                        $tempName = $_FILES['image']['tmp_name'];
+                        $folder = 'C:\\Users\\assan\\OneDrive\\Documents\\ges_atelier_couture\\public\\img\\' . $fileName;
+                        if (move_uploaded_file($tempName, $folder)) {
+                            $_REQUEST['image'] = $fileName;
+                        } else {
+                            $erros['image'] = 'Échec du téléchargement de l\'image.';
+                            Session::add("errors", $erros);
+                        }
+                    }
                     $this->store($_REQUEST);
                 } elseif ($_REQUEST['action'] == "delete-article") {
                     unset($_REQUEST['action']);
@@ -123,6 +131,20 @@
                 } elseif ($_REQUEST['action'] == "update-article") {
                     unset($_REQUEST['action']);
                     unset($_REQUEST['btnUpdate']);
+                    if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+                        $fileName = $_FILES['image']['name'];
+                        $tempName = $_FILES['image']['tmp_name'];
+                        $folder = 'C:\\Users\\assan\\OneDrive\\Documents\\ges_atelier_couture\\public\\img\\' . $fileName;
+                        if (move_uploaded_file($tempName, $folder)) {
+                            $_REQUEST['image'] = $fileName;
+                        } else {
+                            $erros['image'] = 'Échec du déchargement de l\'image.';
+                            Session::add("errors", $erros);
+                        }
+                    } else {
+                        $image = $this->getArticle($_REQUEST['articleId'])['image'];
+                        $_REQUEST['image'] = $image;
+                    }
                     $this->modifier($_REQUEST);
                 } else {
                     new ErrorController();

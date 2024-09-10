@@ -7,16 +7,17 @@
           <a href="<?= WEBROOT ?>?action=form-article&controller=article">Ajouter</a>
         </button>
       </div>
-      <div class="overflow-auto max-h-[500px]">
-        <table class="min-w-full bg-white border">
+      <div class="max-h-[500px] overflow-y-auto">
+        <table class="table-fixed w-full bg-white border">
           <thead class="bg-[#eea6af] text-white">
             <tr>
-              <th class="py-2 px-4 border-b min-w-[150px]">Libellé</th>
-              <th class="py-2 px-4 border-b min-w-[100px]">Qte Stock</th>
-              <th class="py-2 px-4 border-b min-w-[100px]">Prix</th>
-              <th class="py-2 px-4 border-b min-w-[150px]">Categorie</th>
-              <th class="py-2 px-4 border-b min-w-[100px]">Type</th>
-              <th class="py-2 px-4 border-b min-w-[150px]">Actions</th>
+              <th class="py-2 px-4 border-b">Libellé</th>
+              <th class="py-2 px-4 border-b">Qte Stock</th>
+              <th class="py-2 px-4 border-b">Prix</th>
+              <th class="py-2 px-4 border-b">Categorie</th>
+              <th class="py-2 px-4 border-b">Type</th>
+              <th class="py-2 px-4 border-b">Image</th>
+              <th class="py-2 px-4 border-b">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -27,6 +28,7 @@
                 <td class="py-2 px-4 border-b text-center"><?= $article['prixAppro'] ?></td>
                 <td class="py-2 px-4 border-b text-center"><?= $article['nomCategorie'] ?></td>
                 <td class="py-2 px-4 border-b text-center"><?= $article['nomType'] ?></td>
+                <td class="py-2 px-4 border-b text-center"><img src="<?=WEBROOT.'/img/'.$article['image']?>" alt="Image de l'article" class="w-16 h-16 object-cover"></td>
                 <td class="py-2 px-4 border-b flex items-center justify-center gap-2">
                   <form action="<?= WEBROOT ?>" method="post">
                     <input type="hidden" name="action" value="formupdate-article">
@@ -70,4 +72,5 @@
     </div>
   </div>
 </div>
+
 

@@ -11,7 +11,7 @@
     <div class="container mx-auto flex flex-col items-center justify-center h-full gap-10">
       <div class="bg-white p-10 rounded-lg shadow-lg max-w-2xl w-full overflow-auto mb-5 mt-5">
         <h1 class="text-2xl font-bold mb-6">Ajouter un article</h1>
-        <form class="space-y-6" action="<?=WEBROOT?>" method="post">
+        <form enctype="multipart/form-data" class="space-y-6" action="<?=WEBROOT?>" method="post" enctype="multipart/form-data">
           <div>
             <label for="libelle" class="block text-sm font-medium text-gray-700">Libellé</label>
             <input type="text" name="libelle" id="inputLibelle" class="mt-1 block w-full border border-[#c2c9fb] rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#a6c1ee] focus:border-[#a6c1ee] sm:text-sm <?= add_class_invalid("libelle")?>" placeholder="Libellé de l'article">
@@ -42,6 +42,11 @@
                 <option value="<?=$type['typeId']?>"><?=$type['nomType']?></option>
               <?php endforeach;?>
             </select>
+          </div>
+          <div>
+            <label for="image" class="block text-sm font-medium text-gray-700">Image de l'article</label>
+            <input type="file" name="image" id="inputImage" class="mt-1 block w-full border border-[#c2c9fb] rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#a6c1ee] focus:border-[#a6c1ee] sm:text-sm <?= add_class_invalid("image")?>">
+            <div id="errorImage" class="text-red-500 text-sm mt-1"><?=$erros["image"]??""?></div>
           </div>
           <div class="flex justify-end">
             <input type="hidden" name="action" value="save-article">

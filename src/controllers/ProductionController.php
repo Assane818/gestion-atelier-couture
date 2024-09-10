@@ -54,9 +54,6 @@
         
         public function load() {
             if (isset($_REQUEST['action'])) {
-                if (!isset($_REQUEST['page']) || is_string($_REQUEST['page'])) {
-                    $this->listerProd();
-                }
                 if ($_REQUEST['action'] == "liste-prod") {
                     $this->listerProd($_REQUEST['page']);
                 } elseif ($_REQUEST['action'] == "form-prod") {

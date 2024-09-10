@@ -58,6 +58,9 @@
                         <div class="flex space-x-6">
                             <?php foreach (Session::get("panier")->articles as $article) : ?>
                                 <div class="min-w-[250px] bg-white p-4 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
+                                    <div class="flex justify-center mb-4">
+                                        <img src="<?= WEBROOT ?>/img/<?= $article['image'] ?>" alt="<?= $article['libelle'] ?>" class="w-32 h-32 object-cover rounded-full">
+                                    </div>
                                     <h3 class="text-lg font-bold mb-2 text-center text-gray-800"><?= $article['libelle'] ?></h3>
                                     <div class="flex justify-between mb-2">
                                         <span class="font-semibold">Quantité:</span>

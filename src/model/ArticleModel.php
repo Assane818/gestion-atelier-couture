@@ -12,7 +12,7 @@
         }
         public function save(array $article):int {
             extract($article);
-            return $this->executeUpdate("INSERT INTO `$this->table` (`libelle`, `prixAppro`, `qteStock`, `categorieId`, `typeId`) VALUES ('$libelle', '$prixAppro', '$qteStock', '$categorieId', '$typeId');");
+            return $this->executeUpdate("INSERT INTO `$this->table` (`libelle`, `prixAppro`, `qteStock`, `categorieId`, `typeId`, `image`) VALUES ('$libelle', '$prixAppro', '$qteStock', '$categorieId', '$typeId', '$image');");
         }
         public function delete(array $article):int {
             extract($article);
@@ -21,7 +21,7 @@
         }
         public function update(array $article):int|null {
             extract($article);
-            return $this->executeUpdate("UPDATE `$this->table` SET `libelle`='$libelle', `prixAppro`='$prixAppro', `qteStock`='$qteStock', `categorieId`='$categorieId', `typeId`='$typeId' WHERE `article`.`articleId`='$articleId'");
+            return $this->executeUpdate("UPDATE `$this->table` SET `libelle`='$libelle', `prixAppro`='$prixAppro', `qteStock`='$qteStock', `categorieId`='$categorieId', `typeId`='$typeId', `image` = '$image' WHERE `article`.`articleId`='$articleId'");
             
         }
         public function findByNameArticle(string $nomArticle):array|false {

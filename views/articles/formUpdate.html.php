@@ -43,11 +43,16 @@
               <?php endforeach; ?>
             </select>
           </div>
+          <div>
+            <label for="image" class="block text-sm font-medium text-gray-700">Image de l'article</label>
+            <input type="file" name="image" id="inputImage" class="mt-1 block w-full border border-[#c2c9fb] rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#a6c1ee] focus:border-[#a6c1ee] sm:text-sm <?= add_class_invalid("image")?>">
+            <div id="errorImage" class="text-red-500 text-sm mt-1"><?=$erros["image"]??""?></div>
+          </div>
           <div class="flex justify-end">
             <input type="hidden" name="action" value="update-article">
             <input type="hidden" name="articleId" value="<?= $article['articleId'] ?>">
             <input type="hidden" name="controller" value="article">
-            <button type="button" class="text-[#eea6af] px-5 py-2 rounded-full hover:text-[#c2c9fb] border border-[#eea6af] hover:border-[#c2c9fb] mr-4 transition duration-300&page=0"><a href="<?= WEBROOT ?>?action=liste-article&controller=article">Annuler</a></button>
+            <button type="button" class="text-[#eea6af] px-5 py-2 rounded-full hover:text-[#c2c9fb] border border-[#eea6af] hover:border-[#c2c9fb] mr-4 transition duration-300&page=0"><a href="<?= WEBROOT ?>?action=liste-article&controller=article&page=0">Annuler</a></button>
             <button type="submit" class="bg-[#eea6af] text-white px-5 py-2 rounded-full hover:bg-[#c2c9fb] transition duration-300" name="btnUpdate" id="addArticle">Modifier</button>
           </div>
         </form>

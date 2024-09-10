@@ -60,9 +60,6 @@
         
         public function load() {
             if (isset($_REQUEST['action'])) {
-                if (!isset($_REQUEST['page']) || is_string($_REQUEST['page'])) {
-                    $this->listerVente();
-                }
                 if ($_REQUEST['action'] == "liste-vente") {
                     $this->listerVente($_REQUEST['page']);
                 } elseif ($_REQUEST['action'] == "form-vente") {
